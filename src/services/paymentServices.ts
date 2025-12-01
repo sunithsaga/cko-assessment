@@ -35,7 +35,7 @@ export const fetchPayments = async (
     const response = await fetch(`${API_URL}?${queryParams}`);
 
     if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        throw new Error(`${response.status}`);
     }
 
     return response.json();

@@ -1,5 +1,6 @@
 import {
   ClearButton,
+  FilterRow,
   FlexRow,
   SearchButton,
   SearchInput,
@@ -29,10 +30,14 @@ export const SearchSection = ({searchValue,
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
         />
+        
+        <FilterRow>
         <SearchButton onClick={() => onSearchBtnClick(searchValue)}>{I18N.SEARCH_BUTTON}</SearchButton>
         {hasFilters && (
         <ClearButton onClick={onClearFilters}>{I18N.CLEAR_FILTERS}</ClearButton>
+
         )}
+        </FilterRow>
       </FlexRow>
     </>
   );
