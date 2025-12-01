@@ -1,6 +1,4 @@
 import {
-    Container,
-    Title,
     TableWrapper,
     Table,
     TableHeaderWrapper,
@@ -26,9 +24,6 @@ interface PaymentsTableProps {
 export const PaymentsTable = ({ paymentList }: PaymentsTableProps) => {
 
     return (
-        <Container>
-            <Title>{I18N.PAGE_TITLE}</Title>
-
             <TableWrapper>
                 <Table>
                     <TableHeaderWrapper>
@@ -66,6 +61,5 @@ export const PaymentsTable = ({ paymentList }: PaymentsTableProps) => {
                     </TableBodyWrapper>
                 </Table>
             </TableWrapper>
-        </Container>
     )
 }

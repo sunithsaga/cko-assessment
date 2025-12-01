@@ -1,7 +1,6 @@
-import React from "react";
 import { I18N } from "./constants/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { PaymentsPage } from "./components/paymentTable/PaymentsPage";
+import { PaymentsPage } from "./page/PaymentsPage";
 
 // This is required for tests to pass if ReactQuery is used
 // you don't have to use this library in your solution.
