@@ -41,7 +41,7 @@ export const PaymentsTable = ({ paymentList }: PaymentsTableProps) => {
                         {paymentList.length === 0 ? (
                             <tr>
                                 <td colSpan={6}>
-                                    <EmptyBox>No payments found.</EmptyBox>
+                                    <EmptyBox>{I18N.NO_PAYMENTS_FOUND}</EmptyBox>
                                 </td>
                             </tr>
                         ) : (

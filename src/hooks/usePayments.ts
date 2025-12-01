@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { fetchPayments, FetchPaymentsParams } from '../services/paymentServices';
-import { Payment } from '../types/payment';
+import { useState, useEffect, useCallback } from "react";
+import { fetchPayments, FetchPaymentsResponse } from "../services/paymentServices";
+import { Payment } from "../types/payment";
 
 interface UsePaymentsReturn {
   payments: Payment[];
@@ -13,13 +13,11 @@ interface UsePaymentsReturn {
   setCurrentPage: (page: number) => void;
 }
 
-export const usePayments = (
-  params: FetchPaymentsParams = {}
-): UsePaymentsReturn => {
+export const usePayments = (): UsePaymentsReturn => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(params.pageSize || 5);
+  const [pageSize] = useState(5);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,13 +27,7 @@ export const usePayments = (
     setError(null);
 
     try {
-      const data = await fetchPayments({
-        search: params.search,
-        currency: params.currency,
-        page: currentPage,
-        pageSize,
-      });
-
+      const data: FetchPaymentsResponse = await fetchPayments({ page: currentPage, pageSize });
       setPayments(data.payments ?? []);
       setTotal(data.total ?? 0);
     } catch (err) {
@@ -45,7 +37,7 @@ export const usePayments = (
     } finally {
       setIsLoading(false);
     }
-  }, [params.search, params.currency, currentPage, pageSize]);
+  }, [currentPage, pageSize]);
 
   useEffect(() => {
     loadPayments();

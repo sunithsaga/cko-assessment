@@ -201,26 +201,35 @@ export const PaginationRow = styled.div`
   border-top: 1px solid #e5e7eb;
   font-size: 0.875rem;
   color: #374151;
+  background-color: #f9fafb; /* Added background */
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
 `;
 
 export const PaginationButton = styled.button`
-  padding: 0.25rem 0.75rem;
+  padding: 0.5rem 1rem; 
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
+  background-color: white; 
+  color: #374151;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+  cursor: pointer;
 
   &:hover:not(:disabled) {
     background-color: #f3f4f6;
+    border-color: #9ca3af;
   }
 
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    background-color: #f3f4f6;
   }
 `;
 
 export const TableHeaderWrapper = styled.thead`
-  background-color: #f9fafb; /* Slightly darker background to differentiate the header */
+  background-color: #f9fafb;
 `;
 
 export const TableHeaderRow = styled.tr`
