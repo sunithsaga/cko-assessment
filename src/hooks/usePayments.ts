@@ -1,6 +1,6 @@
+import { Payment, FetchPaymentsParams } from './../types/payment';
 import { useState, useEffect, useCallback } from "react";
-import { fetchPayments, FetchPaymentsResponse } from "../services/paymentServices";
-import { Payment } from "../types/payment";
+import { fetchPayments,  } from "../services/paymentServices";
 
 interface UsePaymentsReturn {
   payments: Payment[];
@@ -13,11 +13,13 @@ interface UsePaymentsReturn {
   setCurrentPage: (page: number) => void;
 }
 
-export const usePayments = (): UsePaymentsReturn => {
+export const usePayments = (
+  params: FetchPaymentsParams = {}
+): UsePaymentsReturn => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [total, setTotal] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize] = useState(5);
+  const [currentPage, setCurrentPage] = useState(params.page || 1);
+  const [pageSize] = useState(params.pageSize || 5);
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,9 +29,14 @@ export const usePayments = (): UsePaymentsReturn => {
     setError(null);
 
     try {
-      const data: FetchPaymentsResponse = await fetchPayments({ page: currentPage, pageSize });
-      setPayments(data.payments ?? []);
-      setTotal(data.total ?? 0);
+      const data = await fetchPayments({
+        ...params,
+        page: currentPage,
+        pageSize,
+      });
+
+      setPayments(data.payments);
+      setTotal(data.total);
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "An error occurred";
       setError(errMsg);
@@ -37,7 +44,7 @@ export const usePayments = (): UsePaymentsReturn => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentPage, pageSize]);
+  }, [params.search, params.currency, currentPage, pageSize]);
 
   useEffect(() => {
     loadPayments();

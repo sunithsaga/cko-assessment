@@ -1,42 +1,45 @@
 import { API_URL } from '../constants';
-import { Payment } from '../types/payment';
+import {  FetchPaymentsResponseSchema, FetchPaymentsResponse, FetchPaymentsParams } from '../types/payment';
 
-export interface FetchPaymentsParams {
-    search?: string;
-    currency?: string;
-    page?: number;
-    pageSize?: number;
-}
 
-export interface FetchPaymentsResponse {
-    payments: Payment[];
-    total: number;
-    page: number;
-    pageSize: number;
-}
 
 export const fetchPayments = async (
-    params: FetchPaymentsParams = {}
+  params: FetchPaymentsParams = {}
 ): Promise<FetchPaymentsResponse> => {
-    const {
-        search = '',
-        currency = '',
-        page = 1,
-        pageSize = 5
-    } = params;
+  const { search = '', currency = '', page = 1, pageSize = 5 } = params;
 
-    const queryParams = new URLSearchParams({
-        search,
-        currency,
-        page: page.toString(),
-        pageSize: pageSize.toString(),
-    });
+  const queryParams = new URLSearchParams({
+    search,
+    currency,
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+  });
 
-    const response = await fetch(`${API_URL}?${queryParams}`);
+  const response = await fetch(`${API_URL}?${queryParams}`);
 
+  let json: unknown;
+  try {
+    json = await response.json();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to parse API response as JSON");
+  }
+  
     if (!response.ok) {
-        throw new Error(`${response.status}`);
-    }
+    console.log(response.status)
+    throw new Error(JSON.stringify(response.status));
+  }
 
-    return response.json();
+
+  const parsed = FetchPaymentsResponseSchema.safeParse(json);
+
+
+  if (!parsed.success) {
+    console.error("Invalid API response", parsed.error);
+    throw new Error("Invalid API response format");
+  }
+
+
+
+  return parsed.data;
 };

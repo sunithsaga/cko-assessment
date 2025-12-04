@@ -12,24 +12,28 @@ export const PaymentsPage = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [currency, setCurrency] = useState("");
-   const [currentPage, setCurrentPage] = useState(1);
 
-  const { payments: allPayments, isLoading: isLoadingAll, error:noError } = usePayments();
-const { payments, total, pageSize, error, isLoading } = usePaymentFilters({
-  search: searchQuery,
-  currency,
-  page: currentPage,
-  pageSize: 5,
-});
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const { payments: allPayments, isLoading: isLoadingAll, error: errorAll } = usePayments();
+
+
+  const {
+    payments,
+    total,
+    pageSize,
+    isLoading,
+    error,
+    setCurrentPage: setPage,
+  } = usePaymentFilters({
+    search: searchQuery,
+    currency,
+    page: currentPage,
+    pageSize: 5,
+  });
 
   const CURRENCY_LIST = [...new Set(allPayments.map((p) => p.currency))];
 
-  const handleCurrencyChange = (value: string) => {
-    console.log(value,'value')
-setCurrency(value);
-     setCurrentPage(1);
-  }
 
   const handleClearFilters = () => {
     setSearchValue("");
@@ -38,9 +42,15 @@ setCurrency(value);
     setCurrentPage(1);
   };
 
-  const handleSearchClick = (value: string) => {
+  const handleSearch = (value: string) => {
     setSearchQuery(value);
-    setCurrentPage(1);
+    setSearchValue(value);
+    setCurrentPage(1); 
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    setPage(page); 
   };
 
   return (
@@ -49,25 +59,29 @@ setCurrency(value);
 
       <SearchSection
         searchValue={searchValue}
-        onSearchChange={setSearchValue}
-        onSearchBtnClick={handleSearchClick}
+        onSearchChange={handleSearch}
+        onSearchBtnClick={handleSearch}
         onClearFilters={handleClearFilters}
         hasFilters={searchValue !== "" || currency !== ""}
         currency={currency}
-        onCurrencyChange={handleCurrencyChange}
+        onCurrencyChange={setCurrency}
         currencies={CURRENCY_LIST}
       />
 
       {(isLoading || isLoadingAll) && <Spinner />}
 
-      <ErrorMessage message={(error || noError)  ?? undefined} />
+      <ErrorMessage message={error ?? errorAll ?? undefined} />
 
-      {!isLoading && !isLoadingAll && !error && payments.length > 0 && (
-        <PaymentsTable paymentList={payments} />
+      {!error &&!isLoading && !isLoadingAll && payments.length > 0 && (
+        <>
+          <PaymentsTable paymentList={payments} />
+          <Pagination
+            currentPage={currentPage}
+            totalPages={Math.ceil(total / pageSize)}
+            onPageChange={handlePageChange}
+          />
+        </>
       )}
-      <Pagination  currentPage={currentPage}
-      totalPages={Math.ceil(total / pageSize)}
-      onPageChange={setCurrentPage} />
     </Container>
   );
 };

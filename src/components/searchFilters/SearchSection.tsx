@@ -30,31 +30,29 @@ export const SearchSection = ({
 }: SearchSectionProps) => {
   return (
     <>
-        
-
-        <FilterRow>
-<SearchInput
+      <FilterRow>
+        <SearchInput
           type="text"
           placeholder={I18N.SEARCH_PLACEHOLDER}
           value={searchValue}
           onChange={(e) => onSearchChange(e.target.value)}
         />
-          <CurrencyFilter
-            currencies={currencies}
-            value={currency}
-            onCurrencyChange={onCurrencyChange}
-          ></CurrencyFilter>
+        <CurrencyFilter
+          currencies={currencies}
+          value={currency}
+          onCurrencyChange={onCurrencyChange}
+        ></CurrencyFilter>
 
-          <SearchButton onClick={() => onSearchBtnClick(searchValue)}>
-            {I18N.SEARCH_BUTTON}
-          </SearchButton>
+        <SearchButton onClick={() => onSearchBtnClick(searchValue)}>
+          {I18N.SEARCH_BUTTON}
+        </SearchButton>
 
-          {hasFilters && (
-            <ClearButton onClick={onClearFilters}>
-              {I18N.CLEAR_FILTERS}
-            </ClearButton>
-          )}
-        </FilterRow>
+        {hasFilters && (
+          <ClearButton onClick={onClearFilters}>
+            {I18N.CLEAR_FILTERS}
+          </ClearButton>
+        )}
+      </FilterRow>
     </>
   );
 };

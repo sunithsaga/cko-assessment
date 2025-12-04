@@ -13,6 +13,29 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      
+      exclude: [
+        '**/node_modules/**',
+        '**/dist/**',
+        '**/*.d.ts',
+        '**/*.config.*',
+        
+        '**/postcss.config.js',
+        '**/tailwind.config.js',
+        
+        'payment-list-challenge-react/public/**',
+        
+        '**/mockServiceWorker.js',
+        
+        'payment-list-challenge-react', 
+      ],
     },
+    
+    exclude: [
+      'node_modules/**',
+      '**.config.ts', 
+      '**/postcss.config.js',
+      '**/tailwind.config.js',
+    ]
   },
 });

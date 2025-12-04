@@ -18,7 +18,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
   return (
     <PaginationRow>
       <PaginationButton onClick={handlePrev} disabled={currentPage === 1}>{I18N.PREVIOUS_BUTTON}</PaginationButton>
-      <span>Page {currentPage} of {totalPages}</span>
+      <span>{I18N.PAGE_LABEL} {currentPage}</span>
       <PaginationButton onClick={handleNext} disabled={currentPage === totalPages}>{I18N.NEXT_BUTTON}</PaginationButton>
     </PaginationRow>
   );

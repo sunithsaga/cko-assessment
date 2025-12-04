@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { fetchPayments, FetchPaymentsParams } from '../services/paymentServices';
-import { Payment } from '../types/payment';
+import { useState, useEffect, useCallback } from "react";
+import { fetchPayments } from "../services/paymentServices";
+import { Payment, FetchPaymentsParams } from "../types/payment";
 
-interface UsePaymentsReturn {
+interface UsePaymentFiltersReturn {
   payments: Payment[];
   total: number;
   currentPage: number;
@@ -10,17 +10,16 @@ interface UsePaymentsReturn {
   isLoading: boolean;
   error: string | null;
   refetch: () => void;
+  setCurrentPage: (page: number) => void;
 }
 
 export const usePaymentFilters = (
   params: FetchPaymentsParams = {}
-): UsePaymentsReturn => {
+): UsePaymentFiltersReturn => {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [total, setTotal] = useState(0);
+  const [currentPage, setCurrentPage] = useState(params.page || 1);
   const [pageSize] = useState(params.pageSize || 5);
-
-  const currentPage = params.page || 1;
-
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -36,8 +35,9 @@ export const usePaymentFilters = (
         pageSize,
       });
 
-      setPayments(data.payments ?? []);
-      setTotal(data.total ?? 0);
+      // Zod already ensures valid Payment[] and total
+      setPayments(data.payments);
+      setTotal(data.total);
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : "An error occurred";
       setError(errMsg);
@@ -56,8 +56,9 @@ export const usePaymentFilters = (
     total,
     currentPage,
     pageSize,
-    error,
     isLoading,
+    error,
     refetch: loadPayments,
+    setCurrentPage,
   };
 };
