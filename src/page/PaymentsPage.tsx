@@ -48,6 +48,12 @@ export const PaymentsPage = () => {
     setCurrentPage(1); 
   };
 
+  const handleCurrencySearch = (value: string) => {
+    setPage(1)
+    setCurrency(value);
+    setCurrentPage(1); 
+  }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     setPage(page); 
@@ -64,7 +70,7 @@ export const PaymentsPage = () => {
         onClearFilters={handleClearFilters}
         hasFilters={searchValue !== "" || currency !== ""}
         currency={currency}
-        onCurrencyChange={setCurrency}
+        onCurrencyChange={handleCurrencySearch}
         currencies={CURRENCY_LIST}
       />
 

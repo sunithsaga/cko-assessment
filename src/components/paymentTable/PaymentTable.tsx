@@ -19,8 +19,6 @@ interface PaymentsTableProps {
     paymentList: Payment[];  
 }
 
-
-
 export const PaymentsTable = ({ paymentList }: PaymentsTableProps) => {
 
     return (
