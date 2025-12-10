@@ -45,7 +45,8 @@ export const PaymentsPage = () => {
   const handleSearch = (value: string) => {
     setSearchQuery(value);
     setSearchValue(value);
-    setCurrentPage(1); 
+    setCurrentPage(1);
+    setPage(1); 
   };
 
   const handleCurrencySearch = (value: string) => {
